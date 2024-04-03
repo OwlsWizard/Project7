@@ -20,7 +20,8 @@ class MyApp(ShowBase):
         self.setCamera()
         self.setHUD()
               
-    def setupScene(self):        
+    def setupScene(self):
+                
         """
         #LINES FOR TESTING
         self.camera.setPos(0.0, 0.0, 30000.0)
@@ -65,13 +66,22 @@ class MyApp(ShowBase):
         self.SpaceStation = spaceJamClasses.SpaceStation(self.loader, self.render, 
                                                          "SpaceStation", "./Assets/SpaceStation/spaceStation.x",  "./Assets/SpaceStation/SpaceStation1_Dif2.png", 
                                                          (-500,-100, 20), (0, 90, 0), (1)) 
-        
+
         self.Player = spaceJamClasses.Player(self.loader, self.render, 
                                              "Spaceship","./Assets/Spaceships/theBorg/theBorg.x",  
                                              "./Assets/Spaceships/theBorg/small_space_ship_2_color.jpg", 
                                              (0,0,0), (0,0,0), (0.75),
                                              self.taskMgr, self.render, self.accept, 
                                              self.cTrav) 
+ 
+        self.Sentinal1 = spaceJamClasses.Orbiter(self.loader, self.render, 
+                                                "Drone", "./Assets/Spaceships/DroneDefender/DroneDefender.obj", "./Assets/Spaceships/DroneDefender/octotoad1_auv.png", 
+                                                (0, 90, 0), (1),
+                                                self.taskMgr,
+                                                centralObject=self.Planet2, orbitRadius=900, orbitType="MLB", staringAt=self.Player) 
+        self.Sentinal2 = NotImplemented 
+        
+
         
         fullCycle = 60 #Controls num drones to spawn
         for i in range(fullCycle): #Populates drones

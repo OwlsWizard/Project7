@@ -7,12 +7,15 @@ import re
 
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
+from direct.task.Task import TaskManager
 from direct.interval.LerpInterval import LerpFunc
 from direct.particles.ParticleEffect import ParticleEffect
 from typing import Callable
 
 from CollideObjectBase import *
 from panda3d.core import *
+
+import DefensePaths as defensePaths
 
 
 class Universe(InverseSphereCollideObj):
@@ -77,6 +80,54 @@ class Drone(CapsuleCollidableObject):
         self.modelNode.setHpr(hpr) 
         self.modelNode.setScale(scaleVec)       
 
+class Orbiter(SphereCollideObj):
+    numOrbits = 0
+    velocity = 0.005
+    cloudTimer = 240
+    
+    def __init__(self,
+                 loader: Loader, parentNode: NodePath,
+                 nodeName: str, modelPath: str, texPath: str, 
+                 hpr: Vec3, scaleVec: float,
+                 taskMgr: Task,
+                 centralObject: PlacedObject, orbitRadius: float, orbitType: str, staringAt: Vec3):
+        super(Orbiter, self).__init__(loader, parentNode, nodeName, modelPath, Vec3(0,0,0), 3.2)
+        
+        self.taskManager = taskMgr
+        
+        self.modelNode.setTexture(loader.loadTexture(texPath), 1)
+        
+        self.modelNode.setHpr(hpr) 
+        self.modelNode.setScale(scaleVec)   
+        
+        self.orbitObject = centralObject
+        self.orbitRadius = orbitRadius
+        self.orbitType = orbitType
+        self.staringAt = staringAt
+        Orbiter.numOrbits += 1
+        
+        self.cloudClock = 0
+        
+        self.taskFlag = f"Traveler-{str(Orbiter.numOrbits)}"
+        taskMgr.add(self.orbit, self.taskFlag)
+        
+    def orbit(self, task):
+        if (self.orbitType == "MLB"):
+            positionVec = defensePaths.baseballSeams(task.time * Orbiter.velocity, self.numOrbits, 2.0)
+            self.modelNode.setPos(positionVec * self.orbitRadius + self.orbitObject.modelNode.getPos())
+        elif (self.orbitType == "cloud"):
+            if self.cloudClock < Orbiter.cloudTimer:
+                self.cloudClock += 1
+            else:
+                self.cloudClock = 0
+                positionVec = defensePaths.cloud()
+                self.modelNode.setPos(positionVec * self.orbitRadius + self.orbitObject.modelNode.getPos())
+                
+        self.modelNode.lookAt(self.staringAt.modelNode)
+        
+        return task.cont        
+                
+            
 class Player(CapsuleCollidableObject):
     def __init__(self,
                  loader: Loader, parentNode: NodePath,
