@@ -164,7 +164,6 @@ class MyApp(ShowBase):
     def setCollisions(self):    
         self.pusher.addCollider(self.Player.collisionNode, self.Player.modelNode)
         self.cTrav.add_collider(self.Player.collisionNode,self.pusher)
-        self.cTrav.show_collisions(self.render) #makes collisions visible
             
     def setCamera(self):
         self.disableMouse()
