@@ -73,16 +73,31 @@ class MyApp(ShowBase):
                                              (0,0,0), (0,0,0), (0.75),
                                              self.taskMgr, self.render, self.accept, 
                                              self.cTrav) 
- 
+        
         self.Sentinal1 = spaceJamClasses.Orbiter(self.loader, self.render, 
                                                 "Drone", "./Assets/Spaceships/DroneDefender/DroneDefender.obj", "./Assets/Spaceships/DroneDefender/octotoad1_auv.png", 
-                                                (0, 90, 0), (1),
+                                                (0, 0, 0), (10),
                                                 self.taskMgr,
                                                 centralObject=self.Planet2, orbitRadius=900, orbitType="MLB", staringAt=self.Player) 
-        self.Sentinal2 = NotImplemented 
         
+        self.Sentinal2 = spaceJamClasses.Orbiter(self.loader, self.render, 
+                                                "Drone", "./Assets/Spaceships/DroneDefender/DroneDefender.obj", "./Assets/Spaceships/DroneDefender/octotoad1_auv.png", 
+                                                (0, 0, 0), (10),
+                                                self.taskMgr,
+                                                centralObject=self.Planet6, orbitRadius=900, orbitType="MLB", staringAt=self.Player) 
+    
+        self.Sentinal3 = spaceJamClasses.Orbiter(self.loader, self.render, 
+                                                "Drone", "./Assets/Spaceships/DroneDefender/DroneDefender.obj", "./Assets/Spaceships/DroneDefender/octotoad1_auv.png", 
+                                                (0, 0, 0), (10),
+                                                self.taskMgr,
+                                                centralObject=self.Planet5, orbitRadius=900, orbitType="cloud", staringAt=self.Player) 
 
-        
+        self.Sentinal4 = spaceJamClasses.Orbiter(self.loader, self.render, 
+                                        "Drone", "./Assets/Spaceships/DroneDefender/DroneDefender.obj", "./Assets/Spaceships/DroneDefender/octotoad1_auv.png", 
+                                        (0, 0, 0), (10),
+                                        self.taskMgr,
+                                        centralObject=self.Planet5, orbitRadius=900, orbitType="cloud", staringAt=self.Player)  
+               
         fullCycle = 60 #Controls num drones to spawn
         for i in range(fullCycle): #Populates drones
             self.DrawCloudDefense(self.Planet1, 500)

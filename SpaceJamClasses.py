@@ -91,6 +91,7 @@ class Orbiter(SphereCollideObj):
                  hpr: Vec3, scaleVec: float,
                  taskMgr: Task,
                  centralObject: PlacedObject, orbitRadius: float, orbitType: str, staringAt: Vec3):
+        
         super(Orbiter, self).__init__(loader, parentNode, nodeName, modelPath, Vec3(0,0,0), 3.2)
         
         self.taskManager = taskMgr
@@ -126,8 +127,7 @@ class Orbiter(SphereCollideObj):
         self.modelNode.lookAt(self.staringAt.modelNode)
         
         return task.cont        
-                
-            
+                           
 class Player(CapsuleCollidableObject):
     def __init__(self,
                  loader: Loader, parentNode: NodePath,
