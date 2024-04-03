@@ -17,7 +17,7 @@ class CollidableObject(PlacedObject):
     def __init__(self, loader: Loader, parentNode: NodePath, nodeName: str, modelPath: str):
         super(CollidableObject, self).__init__(loader, parentNode, nodeName, modelPath)
         
-        self.collisionNode = self.modelNode.attachNewNode(CollisionNode(nodeName + "_cNode"))#Adds a collider to the object
+        self.collisionNode = self.modelNode.attachNewNode(CollisionNode(nodeName + "_Cnode"))#Adds a collider to the object
 
 class InverseSphereCollideObj(CollidableObject):
     def __init__(self, loader: Loader , parentNode: NodePath, nodeName: str, modelPath: str, colPositionVec: Vec3, colRadius: float):

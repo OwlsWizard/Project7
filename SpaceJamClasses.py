@@ -167,7 +167,10 @@ class Player(CapsuleCollidableObject):
         
         self.turnRate = 0.5
         self.shipSpeed = 5 #rate of movement
-        self.superBoostActive = False
+        
+        self.superBoostLength = 5.0
+        self.superBoostColldown = 5.0
+        
         self.setKeybinds()
         self.setParicles()
 
@@ -204,14 +207,31 @@ class Player(CapsuleCollidableObject):
             self.taskManager.add(self.applyThrust, "forward-thrust")
         else:
             self.taskManager.remove("forward-thrust")
-    
+               
     def superBoost(self, keyDown):
-        if (keyDown and self.superBoostActive == False):
-            self.shipSpeed = 15
-            self.superBoostActive = True
-        else:
-            self.shipSpeed = 5
-            self.superBoostActive = False
+        if (keyDown and (not self.taskManager.hasTaskNamed("superBoost"))):
+                self.shipSpeed = 15
+                self.taskManager.doMethodLater(0, self.addSuperBoost, 'superBoost')   
+                return Task.cont
+        #FIXME: Add in an option to manually cancel the thrust
+    def addSuperBoost(self, task): 
+        """
+        adds the task for superBoost
+        """
+        if (task.time > self.superBoostLength):
+            self.shipSpeed = 5 #FIXME: There is likely a way to optimize this by not setting it on each frame call
+            if (task.time > self.superBoostColldown + self.superBoostLength):
+                print ("super boost ready!")
+                return Task.done 
+                 
+            elif (task.time <= self.superBoostColldown + self.superBoostLength):
+                print ("Super boost recharging")
+                return Task.cont
+        
+        elif task.time <= self.superBoostLength:
+            print("Super boost going!")
+            return Task.cont         
+    
                       
     def leftTurn(self, keyDown):
         if keyDown:
