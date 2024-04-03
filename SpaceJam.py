@@ -21,18 +21,18 @@ class MyApp(ShowBase):
         self.setHUD()
               
     def setupScene(self):
-                
-        """
-        #LINES FOR TESTING
-        self.camera.setPos(0.0, 0.0, 30000.0)
-        self.camera.setHpr(0.0, -90.0, 0.0)
-        self.disableMouse()
+        self.buildCelestialBodies()
+                  
+        self.Player = spaceJamClasses.Player(self.loader, self.render, 
+                                             "Spaceship","./Assets/Spaceships/theBorg/theBorg.x",  
+                                             "./Assets/Spaceships/theBorg/small_space_ship_2_color.jpg", 
+                                             (0,0,0), (0,0,0), (0.75),
+                                             self.taskMgr, self.render, self.accept, 
+                                             self.cTrav) 
         
-        self.camera.setPos(0.0, 0.0, 500.0)
-        self.camera.setHpr(0.0, -90.0, 0.0)
-        self.disableMouse()
-        """
-          
+        self.buildDrones()
+                     
+    def buildCelestialBodies(self):
         self.Universe = spaceJamClasses.Universe(self.loader, self.render, 
                                                  "Universe", "./Assets/Universe/Universe.x",  
                                                  "./Assets/Universe/starfield-in-blue.jpg", 
@@ -65,15 +65,9 @@ class MyApp(ShowBase):
         
         self.SpaceStation = spaceJamClasses.SpaceStation(self.loader, self.render, 
                                                          "SpaceStation", "./Assets/SpaceStation/spaceStation.x",  "./Assets/SpaceStation/SpaceStation1_Dif2.png", 
-                                                         (-500,-100, 20), (0, 90, 0), (1)) 
-
-        self.Player = spaceJamClasses.Player(self.loader, self.render, 
-                                             "Spaceship","./Assets/Spaceships/theBorg/theBorg.x",  
-                                             "./Assets/Spaceships/theBorg/small_space_ship_2_color.jpg", 
-                                             (0,0,0), (0,0,0), (0.75),
-                                             self.taskMgr, self.render, self.accept, 
-                                             self.cTrav) 
-        
+                                                         (-500,-100, 20), (0, 90, 0), (1))         
+    
+    def buildDrones(self):
         self.Sentinal1 = spaceJamClasses.Orbiter(self.loader, self.render, 
                                                 "Drone", "./Assets/Spaceships/DroneDefender/DroneDefender.obj", "./Assets/Spaceships/DroneDefender/octotoad1_auv.png", 
                                                 (0, 0, 0), (10),
@@ -108,8 +102,7 @@ class MyApp(ShowBase):
             self.DrawXYRing(self.SpaceStation, circlePosition, 80)
             self.DrawYZRing(self.SpaceStation, circlePosition, 80)
             self.DrawXZRing(self.SpaceStation, circlePosition, 80)
-                     
-                     
+                        
     def DrawCloudDefense(self, centralObject, radius):
         droneName = self.UpdateDroneCount()
         unitVec = defensePaths.cloud()

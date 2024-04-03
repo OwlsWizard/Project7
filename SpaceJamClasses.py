@@ -213,24 +213,8 @@ class Player(CapsuleCollidableObject):
                 self.shipSpeed = 15
                 self.taskManager.doMethodLater(0, self.addSuperBoost, 'superBoost')   
                 return Task.cont
-        #FIXME: Add in an option to manually cancel the thrust
-    def addSuperBoost(self, task): 
-        """
-        adds the task for superBoost
-        """
-        if (task.time > self.superBoostLength):
-            self.shipSpeed = 5 #FIXME: There is likely a way to optimize this by not setting it on each frame call
-            if (task.time > self.superBoostColldown + self.superBoostLength):
-                print ("super boost ready!")
-                return Task.done 
-                 
-            elif (task.time <= self.superBoostColldown + self.superBoostLength):
-                print ("Super boost recharging")
-                return Task.cont
-        
-        elif task.time <= self.superBoostLength:
-            print("Super boost going!")
-            return Task.cont         
+            
+      
     
                       
     def leftTurn(self, keyDown):
@@ -286,6 +270,23 @@ class Player(CapsuleCollidableObject):
         self.modelNode.setFluidPos(self.modelNode.getPos() + trajectory * self.shipSpeed) #controls movement itself
         return Task.cont
     
+    def addSuperBoost(self, task): 
+        """
+        adds the task for superBoost
+        """
+        if (task.time > self.superBoostLength):
+            self.shipSpeed = 5
+            if (task.time > self.superBoostColldown + self.superBoostLength):
+                #print ("super boost ready!")
+                return Task.done 
+                 
+            elif (task.time <= self.superBoostColldown + self.superBoostLength):
+                #print ("Super boost recharging")
+                return Task.cont
+        
+        elif task.time <= self.superBoostLength:
+            #print("Super boost going!")
+            return Task.cont       
     #FIXME: Old methods for relative direction error at odd angles. Scraped for now, might try to reimplement later. 
     """
     def applyLeftTurn(self, task):
